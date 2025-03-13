@@ -16,8 +16,9 @@ You wake up as John Doe and find that your son, Johnny Doe, is gone.
 === JANE_DOE ===
 You finally woke up, Johnny didnt come home yet! He said he would be back by morning but its already noon.
 + {johnny_missing} [I am sure he's fine. Where was he last night?] He was out with Carl all day and slept at his house slept at Carl's. Johnny said he would be back by the morning
-++ [Where does Carl live again?] the house with the red door. 
-+++ [Ok, I will bring him home] -> DONE
+    Where does Carl live again?
+    the house with the red door. -> DONE
+//+++ [Ok, I will bring him home] -> DONE
 
 
 // Speaking to Carl
@@ -54,13 +55,13 @@ As you walk away, two royal knights stop you.
 "Why were you speaking with Carl?" one demands.  
 "We know he took part in the robbery. He is a criminal, and we are here to kill him."  
 
-+ [Let them kill Carl] 
++ #sticky [Let them kill Carl] 
     ~ carl_dead = true
     Carl’s eyes widen as the knights cut him down.  
     "Justice is served," one knight says before leaving.  
     -> seek_captain_rex_or_maximus
 
-+ [Defend Carl] 
++ #sticky [Defend Carl] 
     ~ knights_hostile = true
     You step between Carl and the knights.  
     "He's just a kid! He didn't plan the robbery!" you argue.  
