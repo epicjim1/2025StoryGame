@@ -16,7 +16,8 @@ You wake up as John Doe and find that your son, Johnny Doe, is gone.
 === JANE_DOE ===
 You finally woke up, Johnny didnt come home yet! He said he would be back by morning but its already noon.
 + {johnny_missing} [I am sure he's fine. Where was he last night?] He was out with Carl all day and slept at his house slept at Carl's. Johnny said he would be back by the morning
-++ [Where does Carl live again?] the house with the red door. -> DONE
+++ [Where does Carl live again?] the house with the red door. 
++++ [Ok, I will bring him home] -> DONE
 
 
 // Speaking to Carl
@@ -43,8 +44,9 @@ Carl looks around before whispering.
 
 === decide_next_step ===
 Now you need to find Johnny. There are two ways:
-+ [Ask Maximus for help] -> talk_to_maximus
-+ [Seek help from Captain Rex] -> talk_to_captain_rex
+
++ #sticky [Ask Maximus for help] -> talk_to_maximus 
++ #sticky [Seek help from Captain Rex] -> talk_to_captain_rex
 
 // Encounter with the Royal Knights
 === encounter_knights ===
