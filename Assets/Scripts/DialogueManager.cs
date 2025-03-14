@@ -4,6 +4,7 @@ using TMPro;
 using UnityEngine;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
+using Unity.Cinemachine;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -17,6 +18,9 @@ public class DialogueManager : MonoBehaviour
     private Story currentStory;
     public bool dialogueIsPlaying { get; private set; }
     private static DialogueManager instance;
+
+    public CinemachineCamera npcCamera;
+    public CinemachineCamera playerCamera;
 
     private void Awake()
     {
@@ -53,7 +57,7 @@ public class DialogueManager : MonoBehaviour
             return;        
         }
 
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetKeyDown(KeyCode.E) || Input.GetMouseButtonDown(0))
         {
             ContinueStory();
         }
@@ -76,14 +80,21 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         dialogueIsPlaying = false;
         dialogueText.text = "";
+        ResetCameras();
     }
 
     private void ContinueStory()
     {
         if (currentStory.canContinue)
         {
-            dialogueText.text = currentStory.Continue();
+            //Debug.Log("story continued");
+            string text = currentStory.Continue();
+            Debug.Log(text);
 
+            dialogueText.text = text;
+            
+            //StartCoroutine(DisplayLine(text));
+            SwitchCameraBasedOnSpeaker(text);
             DisplayChoices();
         }
         else
@@ -130,7 +141,7 @@ public class DialogueManager : MonoBehaviour
             choices[i].gameObject.SetActive(false);
         }
 
-        StartCoroutine(SelectFirstChoice());
+        //StartCoroutine(SelectFirstChoice());
     }
 
     private IEnumerator SelectFirstChoice()
@@ -142,6 +153,7 @@ public class DialogueManager : MonoBehaviour
 
     public void MakeChoice(int choiceIndex)
     {
+        Debug.Log("Choice clicked: " + choiceIndex);
         List<Choice> currentChoices = currentStory.currentChoices;
 
         if (choiceIndex < 0 || choiceIndex >= currentChoices.Count)
@@ -159,5 +171,48 @@ public class DialogueManager : MonoBehaviour
         }
 
         ContinueStory();
+    }
+
+    private IEnumerator DisplayLine(string line)
+    {
+        dialogueText.text = "";
+        bool isAddingRichTextTag = false;
+        foreach (char letter in line.ToCharArray())
+        {
+            if (letter == '<' || isAddingRichTextTag)
+            {
+                dialogueText.text += letter;
+                isAddingRichTextTag = true;
+                if (letter == '>')
+                {
+                    isAddingRichTextTag = false;
+                }
+            }
+            else
+            {
+                dialogueText.text += letter;
+                yield return new WaitForSeconds(.05f);
+            }
+        }
+    }
+
+    private void SwitchCameraBasedOnSpeaker(string text)
+    {
+        if (text.StartsWith("NPC:"))  // If NPC is talking
+        {
+            npcCamera.Priority = 15;
+            playerCamera.Priority = 5;
+        }
+        else if (text.StartsWith("Player:"))  // If Player is talking
+        {
+            playerCamera.Priority = 15;
+            npcCamera.Priority = 5;
+        }
+    }
+
+    private void ResetCameras()
+    {
+        npcCamera.Priority = 0;
+        playerCamera.Priority = 0;
     }
 }

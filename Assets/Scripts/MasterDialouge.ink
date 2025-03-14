@@ -24,23 +24,20 @@ You finally woke up, Johnny didnt come home yet! He said he would be back by mor
 // Speaking to Carl
 === CARL ===
 ~ carl_spoken_to = true
-You find Carl sitting near the market. He looks nervous.  
-"You look like you’ve seen a ghost," you say.  
+NPC: You find Carl sitting near the market. He looks nervous.  
+Player: You look like you’ve seen a ghost,  
 
-+ ["Where is Johnny?"] 
-    Carl sighs. "He… he joined a gang. They needed an extra hand for a robbery."
++ ["Where is Johnny?"] NPC: Carl sighs. "He… he joined a gang. They needed an extra hand for a robbery."
     -> carl_explains
 
 === carl_explains ===
 Carl looks around before whispering.  
 "The robbery went wrong. Everyone ran when the royal knights arrived. I don’t know where Johnny went, but I swear I didn't mean to get him involved!"  
 
-+ ["So you're telling me my son is missing?"] 
-    "Yes… but I can help you find him!" Carl insists.
++ ["So you're telling me my son is missing?"] "Yes… but I can help you find him!" Carl insists.
     -> encounter_knights
 
-+ ["You’re a coward! You left him behind!"]
-    Carl flinches. "I know! I know! I screwed up, okay?"
++ ["You’re a coward! You left him behind!"] Carl flinches. "I know! I know! I screwed up, okay?"
     -> encounter_knights
 
 === decide_next_step ===
