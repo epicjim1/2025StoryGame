@@ -87,9 +87,8 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentStory.canContinue)
         {
-            //Debug.Log("story continued");
             string text = currentStory.Continue();
-            Debug.Log(text);
+            //Debug.Log(text);
 
             dialogueText.text = text;
             

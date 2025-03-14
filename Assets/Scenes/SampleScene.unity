@@ -1165,7 +1165,7 @@ MonoBehaviour:
     Enabled: 0
     DefaultMode: 2
   DefaultBlend:
-    Style: 1
+    Style: 0
     Time: 2
     CustomCurve:
       serializedVersion: 2
@@ -1173,7 +1173,7 @@ MonoBehaviour:
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-  CustomBlends: {fileID: 0}
+  CustomBlends: {fileID: 11400000, guid: 37bda3ebdc879f647bb75c1728392aa7, type: 2}
 --- !u!1 &356417005
 GameObject:
   m_ObjectHideFlags: 0
