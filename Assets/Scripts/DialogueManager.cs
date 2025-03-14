@@ -12,6 +12,7 @@ public class DialogueManager : MonoBehaviour
     public TextAsset inkJSON;
 
     public GameObject dialoguePanel;
+    public TextMeshProUGUI npcNameText;
     public TextMeshProUGUI dialogueText;
     public GameObject[] choices;
     private TextMeshProUGUI[] choicesText;
@@ -82,6 +83,7 @@ public class DialogueManager : MonoBehaviour
         dialoguePanel.SetActive(false);
         dialogueIsPlaying = false;
         dialogueText.text = "";
+        npcNameText.text = "";
         ResetCameras();
     }
 
@@ -89,13 +91,34 @@ public class DialogueManager : MonoBehaviour
     {
         if (currentStory.canContinue)
         {
-            string text = currentStory.Continue();
-            //Debug.Log(text);
+            //string text = currentStory.Continue();
 
-            dialogueText.text = text;
-            
+            //dialogueText.text = text;
+
             //StartCoroutine(DisplayLine(text));
-            SwitchCameraBasedOnSpeaker(text);
+
+            //SwitchCameraBasedOnSpeaker(text);
+            //DisplayChoices();
+
+            string fullText = currentStory.Continue();
+
+            // Split "NPC: Dialogue" format
+            string[] parts = fullText.Split(new char[] { ':' }, 2);
+            if (parts.Length > 1)
+            {
+                string speaker = parts[0].Trim();
+                string dialogue = parts[1].Trim();
+
+                npcNameText.text = speaker;  // Show name separately
+                dialogueText.text = dialogue;  // Show dialogue separately
+            }
+            else
+            {
+                npcNameText.text = ""; // No speaker? Leave it empty
+                dialogueText.text = fullText;
+            }
+
+            SwitchCameraBasedOnSpeaker(fullText);
             DisplayChoices();
         }
         else
