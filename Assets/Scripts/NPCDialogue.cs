@@ -1,6 +1,7 @@
 using UnityEngine;
 using Ink.Runtime;
-using TMPro; // For displaying text
+using TMPro;
+using Unity.Cinemachine; // For displaying text
 
 public class NPCDialogue : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class NPCDialogue : MonoBehaviour
     private bool playerInRange;
     public Transform player;
     private Quaternion defaultRotation;
+
+    public CinemachineCamera npcCam;
+    public Transform lookAtTarget;
 
     void Start()
     {
@@ -67,6 +71,7 @@ public class NPCDialogue : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            npcCam.LookAt = lookAtTarget;
         }
     }
 

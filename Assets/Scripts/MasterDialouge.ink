@@ -14,10 +14,10 @@ You wake up as John Doe and find that your son, Johnny Doe, is gone.
 
 // Asking Jane Doe
 === JANE_DOE ===
-You finally woke up, Johnny didnt come home yet! He said he would be back by morning but its already noon.
-+ {johnny_missing} [I am sure he's fine. Where was he last night?] He was out with Carl all day and slept at his house slept at Carl's. Johnny said he would be back by the morning
-    Where does Carl live again?
-    the house with the red door. -> DONE
+Jane Doe: You finally woke up, Johnny didnt come home yet! He said he would be back by morning but its already noon.
++ {johnny_missing} [I am sure he's fine. Where was he last night?] Jane Doe: He was out with Carl all day and slept at his house slept at Carl's. Johnny said he would be back by the morning
+    Player: Where does Carl live again?
+    Jane Doe: the house with the red door. -> DONE
 //+++ [Ok, I will bring him home] -> DONE
 
 

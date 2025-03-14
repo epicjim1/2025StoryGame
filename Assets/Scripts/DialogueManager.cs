@@ -5,6 +5,7 @@ using UnityEngine;
 using Ink.Runtime;
 using UnityEngine.EventSystems;
 using Unity.Cinemachine;
+using System.Linq;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -19,6 +20,7 @@ public class DialogueManager : MonoBehaviour
     public bool dialogueIsPlaying { get; private set; }
     private static DialogueManager instance;
 
+    public string[] npcNames;
     public CinemachineCamera npcCamera;
     public CinemachineCamera playerCamera;
 
@@ -197,7 +199,7 @@ public class DialogueManager : MonoBehaviour
 
     private void SwitchCameraBasedOnSpeaker(string text)
     {
-        if (text.StartsWith("NPC:"))  // If NPC is talking
+        if (npcNames.Any(name => text.StartsWith(name + ":")))//text.StartsWith(npcNames + ":"))  // If NPC is talking
         {
             npcCamera.Priority = 15;
             playerCamera.Priority = 5;

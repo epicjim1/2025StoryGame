@@ -941,6 +941,8 @@ MonoBehaviour:
   npcStoryPath: CARL
   visualCue: {fileID: 707764118}
   player: {fileID: 605027814}
+  npcCam: {fileID: 1317902038}
+  lookAtTarget: {fileID: 2064459059}
 --- !u!54 &288850889
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2400,6 +2402,8 @@ MonoBehaviour:
   npcStoryPath: JANE_DOE
   visualCue: {fileID: 1351875082}
   player: {fileID: 605027814}
+  npcCam: {fileID: 1317902038}
+  lookAtTarget: {fileID: 261308521}
 --- !u!54 &737368807
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2592,6 +2596,9 @@ MonoBehaviour:
   - {fileID: 288424481}
   - {fileID: 1278561461}
   - {fileID: 116167406}
+  npcNames:
+  - Jane Doe
+  - NPC
   npcCamera: {fileID: 1317902038}
   playerCamera: {fileID: 1411171198}
 --- !u!4 &786589317
