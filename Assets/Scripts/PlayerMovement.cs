@@ -71,4 +71,15 @@ public class PlayerMovement : MonoBehaviour
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
     }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.CompareTag("NPC") && DialogueManager.GetInstance().dialogueIsPlaying)
+        {
+            Vector3 direction = other.transform.position - transform.position;
+            direction.y = 0; // Keep rotation only on the Y-axis
+            Quaternion targetRotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f); // Smooth rotation
+        }
+    }
 }

@@ -918,6 +918,7 @@ GameObject:
   - component: {fileID: 288850890}
   - component: {fileID: 288850889}
   - component: {fileID: 288850888}
+  - component: {fileID: 288850892}
   m_Layer: 0
   m_Name: Carl
   m_TagString: NPC
@@ -937,8 +938,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bab00f5e072bff74c922736757ee1280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcStoryPath: decide_next_step
+  npcStoryPath: CARL
   visualCue: {fileID: 707764118}
+  player: {fileID: 605027814}
 --- !u!54 &288850889
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -983,7 +985,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 5, y: 5, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
@@ -996,7 +998,7 @@ Transform:
   m_GameObject: {fileID: 288850887}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: -6.47, y: 1.237, z: 5.03}
+  m_LocalPosition: {x: -7.31, y: 1.237, z: 5.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -1004,6 +1006,27 @@ Transform:
   - {fileID: 2064459059}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!135 &288850892
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 288850887}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &330585543
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1115,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.11044357, y: -0.000000030531602, z: 0.0000000033927745, w: 0.9938824}
-  m_LocalPosition: {x: 0, y: 3.7970936, z: -3.192221}
+  m_LocalPosition: {x: 0, y: 3.7970936, z: -5.782221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1617,7 +1640,7 @@ Transform:
   m_GameObject: {fileID: 605027811}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.237, z: 2.59}
+  m_LocalPosition: {x: 0, y: 1.237, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2316,6 +2339,7 @@ GameObject:
   - component: {fileID: 737368805}
   - component: {fileID: 737368807}
   - component: {fileID: 737368806}
+  - component: {fileID: 737368808}
   m_Layer: 0
   m_Name: JaneDoe
   m_TagString: NPC
@@ -2357,7 +2381,7 @@ BoxCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 1
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 3
   m_Size: {x: 5, y: 5, z: 5}
   m_Center: {x: 0, y: 0, z: 0}
@@ -2373,8 +2397,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bab00f5e072bff74c922736757ee1280, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  npcStoryPath: CARL
+  npcStoryPath: JANE_DOE
   visualCue: {fileID: 1351875082}
+  player: {fileID: 605027814}
 --- !u!54 &737368807
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2402,6 +2427,27 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 126
   m_CollisionDetection: 0
+--- !u!135 &737368808
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 737368802}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 3.5
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &781364938
 GameObject:
   m_ObjectHideFlags: 0
@@ -3071,7 +3117,7 @@ Transform:
   m_GameObject: {fileID: 917640952}
   serializedVersion: 2
   m_LocalRotation: {x: 0.11044357, y: -0.000000030531602, z: 0.0000000033927747, w: 0.9938824}
-  m_LocalPosition: {x: 0, y: 3.7970936, z: -3.192221}
+  m_LocalPosition: {x: 0, y: 3.7970936, z: -5.782221}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3714,7 +3760,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1317902037}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.03378447, y: -0.37778917, z: 0.013795711, w: 0.9251722}
+  m_LocalRotation: {x: 0.022620702, y: -0.22857873, z: 0.0053127375, w: 0.9732481}
   m_LocalPosition: {x: 2.613, y: 0.653, z: -0.85599995}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
