@@ -177,7 +177,7 @@ public class DialogueManager : MonoBehaviour
 
     public void MakeChoice(int choiceIndex)
     {
-        Debug.Log("Choice clicked: " + choiceIndex);
+        //Debug.Log("Choice clicked: " + choiceIndex);
         List<Choice> currentChoices = currentStory.currentChoices;
 
         if (choiceIndex < 0 || choiceIndex >= currentChoices.Count)
