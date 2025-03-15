@@ -1842,6 +1842,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 171706, guid: 0925457c2b2fe9f4a8747c59013d56d4, type: 3}
       insertIndex: -1
       addedObject: {fileID: 414881297}
+    - targetCorrespondingSourceObject: {fileID: 171706, guid: 0925457c2b2fe9f4a8747c59013d56d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 414881302}
+    - targetCorrespondingSourceObject: {fileID: 171706, guid: 0925457c2b2fe9f4a8747c59013d56d4, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 414881301}
   m_SourcePrefab: {fileID: 100100000, guid: 0925457c2b2fe9f4a8747c59013d56d4, type: 3}
 --- !u!1 &414881295 stripped
 GameObject:
@@ -1885,6 +1891,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f3c57c532756484296e66acdea34cb2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  holdToSprint: 1
 --- !u!114 &414881298
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1899,17 +1906,52 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterController: {fileID: 414881296}
   playerCamera: {fileID: 1298039148}
-  runAcceleration: 50
+  runAcceleration: 35
   runSpeed: 4
-  drag: 30
+  sprintAccelerataion: 50
+  sprintSpeed: 7
+  drag: 15
+  movingThreshold: 0.01
   lookSenseH: 0.1
   lookSenseV: 0.1
   lookLimitV: 70
+--- !u!95 &414881299 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9551078, guid: 0925457c2b2fe9f4a8747c59013d56d4, type: 3}
+  m_PrefabInstance: {fileID: 414881294}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &414881300 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 408822, guid: 0925457c2b2fe9f4a8747c59013d56d4, type: 3}
   m_PrefabInstance: {fileID: 414881294}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &414881301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414881295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ebd0708e48437e419d1a12647eb0c9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  animator: {fileID: 414881299}
+  locomotionBlendSpeed: 4
+--- !u!114 &414881302
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414881295}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 51a1f2a848758b349ac2ada7a7018709, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <CurrentPlayerMovementState>k__BackingField: 0
 --- !u!1 &469486436
 GameObject:
   m_ObjectHideFlags: 0
