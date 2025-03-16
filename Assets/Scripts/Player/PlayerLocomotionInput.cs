@@ -64,7 +64,7 @@ namespace FinalCharacterController
         {
             if (!context.performed)
                 return;
-
+            //Debug.Log("Jump pressed");
             JumpPressed = true;
         }
 

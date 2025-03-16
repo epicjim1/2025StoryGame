@@ -19,6 +19,7 @@ namespace FinalCharacterController
         public float runSpeed = 6f;
         public float sprintAccelerataion = 50f;
         public float sprintSpeed = 9f;
+        public float inAirAcceleration = 25f;
         public float drag = 0.1f;
         public float gravity = 25f;
         public float jumpSpeed = 1.0f;
@@ -34,15 +35,23 @@ namespace FinalCharacterController
         public float lookSenseV = 0.1f;
         public float lookLimitV = 89f;
 
+        [Header("Environment Details")]
+        [SerializeField] private LayerMask groundLayers;
+
         private PlayerLocomotionInput playerLocomotionInput;
         private PlayerState playerState;
 
         private Vector2 cameraRotation = Vector2.zero;
         private Vector2 playerTargetRotation = Vector2.zero;
 
+        private bool jumpedLastFrame = false;
         private bool isRotatingClockwise = false;
         private float rotatingToTargetTimer = 0f;
         private float verticalVelocity = 0f;
+        private float antiBump;
+        private float stepOffset;
+
+        private PlayerMovementState lastMovementState = PlayerMovementState.Falling;
         #endregion
 
         #region Startup
@@ -50,6 +59,9 @@ namespace FinalCharacterController
         {
             playerLocomotionInput = GetComponent<PlayerLocomotionInput>();
             playerState = GetComponent<PlayerState>();
+
+            antiBump = sprintSpeed;
+            stepOffset = characterController.stepOffset;
         }
         #endregion
 
@@ -68,6 +80,8 @@ namespace FinalCharacterController
 
         private void UpdateMovementState()
         {
+            lastMovementState = playerState.CurrentPlayerMovementState;
+
             bool canRun = CanRun();
             bool isMovementInput = playerLocomotionInput.MovementInput != Vector2.zero;    //order
             bool isMovingLaterally = IsMovingLaterally();                                   //matter
@@ -82,13 +96,21 @@ namespace FinalCharacterController
             playerState.SetPlayerMovementState(lateralState);
 
             // Control Airborn State
-            if (!isGrounded && characterController.velocity.y > 0f)
+            if ((!isGrounded || jumpedLastFrame) && currentVelocity.y > 0f)
             {
                 playerState.SetPlayerMovementState(PlayerMovementState.Jumping);
+                jumpedLastFrame = false;
+                characterController.stepOffset = 0f;
             }
-            else if (!isGrounded && characterController.velocity.y <= 0f)
+            else if ((!isGrounded || jumpedLastFrame) && currentVelocity.y <= 0f)
             {
                 playerState.SetPlayerMovementState(PlayerMovementState.Falling);
+                jumpedLastFrame = false;
+                characterController.stepOffset = 0f;
+            }
+            else
+            {
+                characterController.stepOffset = stepOffset;
             }
         }
 
@@ -96,14 +118,20 @@ namespace FinalCharacterController
         {
             bool isGrounded = playerState.InGroundedState();
 
-            if (isGrounded && verticalVelocity < 0)
-                verticalVelocity = 0f;
-
             verticalVelocity -= gravity * Time.deltaTime;
+
+            if (isGrounded && verticalVelocity < 0)
+                verticalVelocity = -antiBump;
 
             if (playerLocomotionInput.JumpPressed && isGrounded)
             {
                 verticalVelocity += Mathf.Sqrt(jumpSpeed * 3 * gravity);
+                jumpedLastFrame = true;
+            }
+
+            if (playerState.IsStateGroundedState(lastMovementState) && !isGrounded)
+            {
+                verticalVelocity += antiBump;
             }
         }
 
@@ -114,9 +142,11 @@ namespace FinalCharacterController
             bool isGrounded = playerState.InGroundedState();
             bool isWalking = playerState.CurrentPlayerMovementState == PlayerMovementState.Walking;
 
-            float lateralAcceleration = isWalking ? walkAcceleration :
+            float lateralAcceleration = !isGrounded ? inAirAcceleration :
+                                        isWalking ? walkAcceleration :
                                         isSprinting ? sprintAccelerataion : runAcceleration;
-            float clampLateralMagnitude = isWalking ? walkSpeed :
+            float clampLateralMagnitude = !isGrounded ? sprintSpeed :
+                                          isWalking ? walkSpeed :
                                           isSprinting ? sprintSpeed : runSpeed;
 
             // State dependent acceleration and speed
@@ -130,11 +160,24 @@ namespace FinalCharacterController
             // Add drag to player
             Vector3 currentDrag = currentVelocity.normalized * drag;
             currentVelocity = (currentVelocity.magnitude > drag) ? currentVelocity - currentDrag : Vector3.zero;
-            currentVelocity = Vector3.ClampMagnitude(currentVelocity, clampLateralMagnitude);
+            currentVelocity = Vector3.ClampMagnitude(new Vector3(currentVelocity.x, 0f, currentVelocity.z), clampLateralMagnitude);
             currentVelocity.y += verticalVelocity;
+            currentVelocity = !isGrounded ? HandleSteepWalls(currentVelocity) : currentVelocity;
 
             // Move character only use once
             characterController.Move(currentVelocity * Time.deltaTime);
+        }
+
+        private Vector3 HandleSteepWalls(Vector3 velocity)
+        {
+            Vector3 normal = CharacterControllerUtils.GetNormalWithSphereCast(characterController, groundLayers);
+            float angle = Vector3.Angle(normal, Vector3.up);
+            bool validAngle = angle <= characterController.slopeLimit;
+
+            if (!validAngle && verticalVelocity < 0f)
+                velocity = Vector3.ProjectOnPlane(velocity, normal);
+
+            return velocity;
         }
         #endregion
 
@@ -215,8 +258,7 @@ namespace FinalCharacterController
 
         private bool IsGrounded()
         {
-            //return characterController.isGrounded;
-            if (characterController.isGrounded) return true;
+            /*if (characterController.isGrounded) return true;
 
             RaycastHit hit;
             float extraHeight = 0.2f; // Extend slightly beyond the capsule bottom
@@ -228,7 +270,29 @@ namespace FinalCharacterController
                 return true;
             }
 
-            return false;
+            return false;*/
+            bool grounded = playerState.InGroundedState() ? IsGroundedWhileGrounded() : IsGroundedWhileAirborne();
+
+            return grounded;
+        }
+
+        private bool IsGroundedWhileGrounded()
+        {
+            Vector3 spherePosition = new Vector3(transform.position.x, transform.position.y - characterController.radius, transform.position.z);
+
+            bool grounded = Physics.CheckSphere(spherePosition, characterController.radius, groundLayers, QueryTriggerInteraction.Ignore);
+
+            return grounded;
+        }
+
+        private bool IsGroundedWhileAirborne()
+        {
+            Vector3 normal = CharacterControllerUtils.GetNormalWithSphereCast(characterController, groundLayers);
+            float angle = Vector3.Angle(normal, Vector3.up);
+            //print(angle);
+            bool validAngle = angle <= characterController.slopeLimit;
+
+            return characterController.isGrounded && validAngle;
         }
 
         private bool CanRun()
