@@ -16,7 +16,10 @@ namespace FinalCharacterController
         public float sprintAccelerataion = 50f;
         public float sprintSpeed = 7f;
         public float drag = 0.1f;
+        public float gravity = 25f;
+        public float jumpSpeed = 1.0f;
         public float movingThreshold = 0.01f;
+        private Vector3 currentVelocity = Vector3.zero;
 
         [Header("Camera Settings")]
         public float lookSenseH = 0.1f;
@@ -28,6 +31,8 @@ namespace FinalCharacterController
 
         private Vector2 cameraRotation = Vector2.zero;
         private Vector2 playerTargetRotation = Vector2.zero;
+
+        private float verticalVelocity = 0f;
         #endregion
 
         #region Startup
@@ -47,6 +52,7 @@ namespace FinalCharacterController
             }
 
             UpdateMovementState();
+            HandleVerticalMovement();
             HandleLateralMovement();
         }
 
@@ -55,18 +61,44 @@ namespace FinalCharacterController
             bool isMovementInput = playerLocomotionInput.MovementInput != Vector2.zero;    //order
             bool isMovingLaterally = IsMovingLaterally();                                   //matter
             bool isSprinting = playerLocomotionInput.SprintToggledOn && isMovingLaterally; //order matters
-            //Debug.Log(isMovingLaterally);
+            bool isGrounded = IsGrounded();
 
             PlayerMovementState lateralState = isSprinting ? PlayerMovementState.Sprinting :
                                                isMovingLaterally || isMovementInput ? PlayerMovementState.Running : PlayerMovementState.Idling;
 
             playerState.SetPlayerMovementState(lateralState);
+
+            // Control Airborn State
+            if (!isGrounded && characterController.velocity.y > 0f)
+            {
+                playerState.SetPlayerMovementState(PlayerMovementState.Jumping);
+            }
+            else if (!isGrounded && characterController.velocity.y <= 0f)
+            {
+                playerState.SetPlayerMovementState(PlayerMovementState.Falling);
+            }
         }
-        private Vector3 newVelocity = Vector3.zero;
+
+        private void HandleVerticalMovement()
+        {
+            bool isGrounded = playerState.InGroundedState();
+
+            if (isGrounded && verticalVelocity < 0)
+                verticalVelocity = 0f;
+
+            verticalVelocity -= gravity * Time.deltaTime;
+
+            if (playerLocomotionInput.JumpPressed && isGrounded)
+            {
+                verticalVelocity += Mathf.Sqrt(jumpSpeed * 3 * gravity);
+            }
+        }
+
         private void HandleLateralMovement()
         {
             // Create quick references for current state
             bool isSprinting = playerState.CurrentPlayerMovementState == PlayerMovementState.Sprinting;
+            bool isGrounded = playerState.InGroundedState();
 
             float lateralAcceleration = isSprinting ? sprintAccelerataion : runAcceleration;
             float clampLateralMagnitude = isSprinting ? sprintSpeed : runSpeed;
@@ -77,15 +109,16 @@ namespace FinalCharacterController
             Vector3 movementDirection = cameraRightXZ * playerLocomotionInput.MovementInput.x + cameraForwardXZ * playerLocomotionInput.MovementInput.y;
 
             Vector3 movementDelta = movementDirection * lateralAcceleration;
-             newVelocity += movementDelta;//= characterController.velocity + movementDelta;
+            currentVelocity += movementDelta;//= characterController.velocity + movementDelta;
 
             // Add drag to player
-            Vector3 currentDrag = newVelocity.normalized * drag;
-            newVelocity = (newVelocity.magnitude > drag) ? newVelocity - currentDrag : Vector3.zero;
-            newVelocity = Vector3.ClampMagnitude(newVelocity, clampLateralMagnitude);
+            Vector3 currentDrag = currentVelocity.normalized * drag;
+            currentVelocity = (currentVelocity.magnitude > drag) ? currentVelocity - currentDrag : Vector3.zero;
+            currentVelocity = Vector3.ClampMagnitude(currentVelocity, clampLateralMagnitude);
+            currentVelocity.y += verticalVelocity;
 
             // Move character only use once
-            characterController.Move(newVelocity * Time.deltaTime);
+            characterController.Move(currentVelocity * Time.deltaTime);
         }
         #endregion
 
@@ -110,11 +143,16 @@ namespace FinalCharacterController
         #region State Checks
         private bool IsMovingLaterally()
         {
-            Vector3 lateralVelocity = new Vector3(newVelocity.x, 0f, newVelocity.z);
-            //Debug.Log(lateralVelocity);
+            Vector3 lateralVelocity = new Vector3(currentVelocity.x, 0f, currentVelocity.z);
+            
             return lateralVelocity.magnitude > movingThreshold;
         }
         #endregion
+
+        private bool IsGrounded()
+        {
+            return characterController.isGrounded;
+        }
 
         private void OnTriggerStay(Collider other)
         {
