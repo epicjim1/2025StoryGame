@@ -10,11 +10,12 @@ namespace FinalCharacterController
     {
         [SerializeField] private bool holdToSprint = true;
 
-        public bool SprintToggledOn {  get; private set; }
         public PlayerControls PlayerControls { get; private set; }
         public Vector2 MovementInput { get; private set; }
         public Vector2 LookInput { get; private set; }
         public bool JumpPressed { get; private set; }
+        public bool SprintToggledOn { get; private set; }
+        public bool WalkToggledOn { get; private set; }
 
         private void OnEnable()
         {
@@ -65,6 +66,14 @@ namespace FinalCharacterController
                 return;
 
             JumpPressed = true;
+        }
+
+        public void OnToggleWalk(InputAction.CallbackContext context)
+        {
+            if (!context.performed)
+                return;
+
+            WalkToggledOn = !WalkToggledOn;
         }
     }
 }
