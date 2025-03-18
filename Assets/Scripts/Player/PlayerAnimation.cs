@@ -20,8 +20,14 @@ namespace FinalCharacterController
         private static int isJumpingHash = Animator.StringToHash("isJumping");
         private static int isRotatingToTargetHash = Animator.StringToHash("isRotatingToTarget");
         private static int rotationMismatchHash = Animator.StringToHash("rotationMismatch");
+        private static int drawSwordTriggerHash = Animator.StringToHash("drawWeapon");
+        private static int sheathSwordTriggerHash = Animator.StringToHash("sheathWeapon");
 
         private Vector3 currentBlendInput = Vector3.zero;
+
+        private float sprintMaxBlendValue = 1.5f;
+        private float runMaxBlendValue = 1.0f;
+        private float walkMaxBlendValue = 0.5f;
 
         private void Awake()
         {
@@ -44,8 +50,11 @@ namespace FinalCharacterController
             bool isFalling = playerState.CurrentPlayerMovementState == PlayerMovementState.Falling;
             bool isGrounded = playerState.InGroundedState();
 
-            Vector2 inputTarget = isSprinting ? playerLocomotionInput.MovementInput * 1.5f :
-                                  isRunning ? playerLocomotionInput.MovementInput * 1f : playerLocomotionInput.MovementInput * 0.5f;
+            bool isRunBlendValue = isRunning || isJumping || isFalling;
+
+            Vector2 inputTarget = isSprinting ? playerLocomotionInput.MovementInput * sprintMaxBlendValue :
+                                  isRunBlendValue ? playerLocomotionInput.MovementInput * runMaxBlendValue :
+                                                    playerLocomotionInput.MovementInput * walkMaxBlendValue;
 
             currentBlendInput = Vector3.Lerp(currentBlendInput, inputTarget, locomotionBlendSpeed * Time.deltaTime);
 
@@ -59,6 +68,24 @@ namespace FinalCharacterController
             animator.SetFloat(inputYHash, currentBlendInput.y);
             animator.SetFloat(inputMagnitudeHash, currentBlendInput.magnitude);
             animator.SetFloat(rotationMismatchHash, playerController.RotationMismatch);
+
+            // --- New Draw/Sheath Weapon Logic ---
+            if (playerLocomotionInput.DrawWeaponPressed)
+            {
+                // Toggle the weapon state
+                playerState.ToggleWeaponDrawn();
+
+                if (playerState.IsWeaponDrawn)
+                {
+                    // If weapon is now drawn, trigger the drawSword animation
+                    animator.SetTrigger(drawSwordTriggerHash);
+                }
+                else
+                {
+                    // If weapon is now sheathed, trigger the sheathSword animation
+                    animator.SetTrigger(sheathSwordTriggerHash);
+                }
+            }
         }
     }
 }

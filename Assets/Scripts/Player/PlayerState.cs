@@ -5,6 +5,8 @@ namespace FinalCharacterController
     public class PlayerState : MonoBehaviour
     {
         [field: SerializeField] public PlayerMovementState CurrentPlayerMovementState { get; private set; } = PlayerMovementState.Idling;
+        // New flag to track weapon state.
+        public bool IsWeaponDrawn { get; private set; } = false;
 
         public void SetPlayerMovementState(PlayerMovementState playerMovementState)
         {
@@ -22,6 +24,12 @@ namespace FinalCharacterController
                    movementState == PlayerMovementState.Walking ||
                    movementState == PlayerMovementState.Running ||
                    movementState == PlayerMovementState.Sprinting;
+        }
+
+        // New method to toggle the weapon state.
+        public void ToggleWeaponDrawn()
+        {
+            IsWeaponDrawn = !IsWeaponDrawn;
         }
     }
     public enum PlayerMovementState

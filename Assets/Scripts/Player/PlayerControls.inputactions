@@ -15,6 +15,15 @@
                     "initialStateCheck": true
                 },
                 {
+                    "name": "DrawWeapon",
+                    "type": "Button",
+                    "id": "c80983c2-5a38-4425-b28a-f74d649556e1",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
                     "name": "Jump",
                     "type": "Button",
                     "id": "d4a846bd-a34e-4eed-ac91-411f4187a62d",
@@ -186,6 +195,28 @@
                 },
                 {
                     "name": "",
+                    "id": "2ffc2fb4-89ab-4d08-a666-ed0cd0ffdbcc",
+                    "path": "<Keyboard>/r",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrawWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "e0dc2cf6-49cb-46d2-afd3-bbe824315207",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrawWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
                     "id": "6a76a3f4-20b4-4acf-b753-0a0e393b554d",
                     "path": "<Keyboard>/space",
                     "interactions": "",
@@ -302,6 +333,76 @@
                     "processors": "",
                     "groups": "",
                     "action": "ToggleWalk",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        },
+        {
+            "name": "Combat",
+            "id": "0cc20f95-6f67-4083-8ccb-77397ed9be78",
+            "actions": [
+                {
+                    "name": "DrawWeapon",
+                    "type": "Button",
+                    "id": "73cd01ba-7f13-4180-a530-360a59bfb10b",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Attack",
+                    "type": "Button",
+                    "id": "0d94432c-9aa5-440b-9d44-2b8304a1bf8e",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "22090fbe-771d-4546-bf88-89144e7352e6",
+                    "path": "<Keyboard>/r",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrawWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "da00ab2a-e317-4e6c-b0a1-22e8360666aa",
+                    "path": "<Gamepad>/buttonWest",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DrawWeapon",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5406acd4-2467-45d2-a3bb-046255fdf9b1",
+                    "path": "<Mouse>/leftButton",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "b5a1de86-da74-4ee7-8f7c-671e979d1b09",
+                    "path": "<Gamepad>/rightTrigger",
+                    "interactions": "Tap",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

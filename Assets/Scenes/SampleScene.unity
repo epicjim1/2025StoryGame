@@ -2499,6 +2499,7 @@ MonoBehaviour:
   inAirAcceleration: 25
   drag: 15
   gravity: 25
+  terminalVelocity: 50
   jumpSpeed: 1
   movingThreshold: 0.01
   playerModelRotationSpeed: 10
@@ -2812,7 +2813,7 @@ MonoBehaviour:
   CameraSide: 1
   CameraDistance: 2
   AvoidObstacles:
-    Enabled: 0
+    Enabled: 1
     CollisionFilter:
       serializedVersion: 2
       m_Bits: 1

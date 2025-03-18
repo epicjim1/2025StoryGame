@@ -16,6 +16,7 @@ namespace FinalCharacterController
         public bool JumpPressed { get; private set; }
         public bool SprintToggledOn { get; private set; }
         public bool WalkToggledOn { get; private set; }
+        public bool DrawWeaponPressed { get; private set; }
 
         private void OnEnable()
         {
@@ -35,6 +36,7 @@ namespace FinalCharacterController
         private void LateUpdate()
         {
             JumpPressed = false;
+            DrawWeaponPressed = false;
         }
 
         public void OnMovement(InputAction.CallbackContext context)
@@ -74,6 +76,14 @@ namespace FinalCharacterController
                 return;
 
             WalkToggledOn = !WalkToggledOn;
+        }
+
+        public void OnDrawWeapon(InputAction.CallbackContext context)
+        {
+            if (context.performed)
+            {
+                DrawWeaponPressed = true;
+            }
         }
     }
 }

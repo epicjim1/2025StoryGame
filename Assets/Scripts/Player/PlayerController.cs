@@ -22,6 +22,7 @@ namespace FinalCharacterController
         public float inAirAcceleration = 25f;
         public float drag = 0.1f;
         public float gravity = 25f;
+        public float terminalVelocity = 50f;
         public float jumpSpeed = 1.0f;
         public float movingThreshold = 0.01f;
         private Vector3 currentVelocity = Vector3.zero;
@@ -132,6 +133,12 @@ namespace FinalCharacterController
             if (playerState.IsStateGroundedState(lastMovementState) && !isGrounded)
             {
                 verticalVelocity += antiBump;
+            }
+
+            // Clamp at terminal velocity
+            if (Mathf.Abs(verticalVelocity) > Mathf.Abs(terminalVelocity))
+            {
+                verticalVelocity = -1f * Mathf.Abs(terminalVelocity);
             }
         }
 
